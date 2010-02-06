@@ -8,7 +8,7 @@ Contact/contact group related calls.
 """
 ## STD LIBS
 import datetime
-import time, md5, re
+import time, hashlib, re
 from pprint import pformat
 
 ## OUR LIBS
@@ -87,7 +87,8 @@ class Contacts(AZTKAPI, xmlrpc.XMLRPC):
 			def do_send(void, address):
 				return self.app.api.emailer.send('en', 'invite', owner_userid, address, **kwargs)
 			
-			hash = md5.md5(result[1]).hexdigest()
+			hash = hashlib.md5(result[1]).hexdigest()
+			
 			kwargs = {
 				'sender_name': sender_name,
 				'sender_email': sender_email,

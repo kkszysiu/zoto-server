@@ -3,7 +3,7 @@ from ConfigParser import ConfigParser
 from AZTKServer import AZTKServer
 import Image, ImageFile, sys, errors, validation, pprint, md5, time, socket, zsp_packets
 from twisted.internet.protocol import Factory
-from twisted.internet.app import Application
+#from twisted.internet.app import Application
 from twisted.internet import defer, reactor
 from twisted.protocols import basic
 from twisted.protocols import policies

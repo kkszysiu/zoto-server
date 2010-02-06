@@ -126,7 +126,8 @@ open(pidfile, 'w').write("%d-%d" % (os.getpid(), 4))
 ###################
 from twisted.python import threadable
 from twisted.internet import reactor
-from twisted.names import client
+#from twisted.names import client
+from twisted.internet import base
 from AZTKServer import AZTKServer
 from AZTKAPI import AZTKAPI
 from InstancePackage import ServerInstancePackage, APIInstancePackage
@@ -136,7 +137,7 @@ import psycopg2
 ## Main Imports ##
 ##################
 try:
-	import xmlrpclib, datetime, types, time, gc, random, sha, socket, version 
+	import xmlrpclib, datetime, types, time, gc, random, hashlib, socket, version
 	import twisted, aztk_config, SimplePBProxy
 	import api
 	import plugins
@@ -187,7 +188,7 @@ gc.enable()
 ############################
 ## Random Seed Generation ##
 ############################
-random.seed(sha.sha(str(time.time())).hexdigest())
+random.seed(hashlib.sha1(str(time.time())).hexdigest())
 
 #############################
 ## Setup Twisted Threading ##
@@ -206,7 +207,7 @@ else:
 ##################################
 ## Setup Threaded Name Resolver ##
 ##################################
-reactor.installResolver(client.ThreadedResolver(reactor))
+reactor.installResolver(base.ThreadedResolver(reactor))
 
 	
 

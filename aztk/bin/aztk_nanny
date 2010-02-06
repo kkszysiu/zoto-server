@@ -12,7 +12,7 @@ Sandbox Hacks by Trey Stout
 import sys
 sys.path += ['/zoto/aztk', '/zoto/aztk/lib']
 
-import os, time, aztk_config, socket, signal
+import os, subprocess, time, aztk_config, socket, signal
 from twisted.internet import reactor
 from twisted.internet.protocol import Factory
 from twisted.internet import threads
@@ -321,7 +321,10 @@ if __name__ == "__main__":
 	else:
 		# see if another nanny is running
 		nanny_port = aztk_config.setup.getint('ports', 'nanny')
-		pin, pout = os.popen4("/bin/fuser %d/tcp" % nanny_port)
+		#pin, pout = os.popen4("/bin/fuser %d/tcp" % nanny_port)
+		p = subprocess.Popen("/bin/fuser %d/tcp" % nanny_port, shell=True, bufsize=0,
+		stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+		(pin, pout) = (p.stdin, p.stdout)
 		results = pout.read()
 		pin.close()
 		pout.close()
