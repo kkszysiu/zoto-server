@@ -297,7 +297,7 @@ CREATE TABLE user_homepage_widgets (
 	owner_userid int4 NOT NULL,
 	widget_id serial NOT NULL,
 	widget_type_id int4 NOT NULL,
-	options text DEFAULT '(dp1\n.',
+	options text DEFAULT E'(dp1\n.',
 	col int4 NOT NULL,
 	idx int4 NOT NULL,
 	PRIMARY KEY (owner_userid, widget_id)

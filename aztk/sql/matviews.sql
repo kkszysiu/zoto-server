@@ -26,7 +26,7 @@ CREATE INDEX zoto_user_contact_groups_array_matview_groups_idx
 CREATE OR REPLACE VIEW zoto_member_contact_groups_array_view AS
 	SELECT
 		t1.userid AS member_userid,
-		zoto_array_accum(t2.group_id) AS groups
+		nullif(zoto_array_accum(t2.group_id),'{NULL}') AS groups
 	FROM
 		users t1
 		LEFT JOIN user_contact_group_xref_users t2 ON (t1.userid = t2.member_userid)

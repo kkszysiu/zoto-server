@@ -451,9 +451,9 @@ CREATE OR REPLACE FUNCTION zoto_tags_are_equal(tag1 varchar, tag2 varchar)
 	BEGIN
 		IF tag1 = tag2 THEN
 			RETURN true;
-		ELSIF convert(tag1 USING iso_8859_1_to_utf8) = tag2 THEN
-			RETURN true;
-		ELSIF tag1 = convert(tag2 USING iso_8859_1_to_utf8) THEN
+ 		ELSIF convert(tag1, 'LATIN1', 'UTF8') = tag2 THEN
+ 			RETURN true;
+ 		ELSIF tag1 = convert(tag2, 'LATIN1', 'UTF8') THEN
 			RETURN true;
 		ELSE
 			RETURN false;
@@ -2249,7 +2249,7 @@ CREATE OR REPLACE FUNCTION zoto_album_add_image (owner int4, album int4, image i
 			album_id=album;
 		IF NOT FOUND THEN
 			return_rec.code := -1;
-			return_rec.message := 'User doesn\'t own album';
+			return_rec.message := E'User doesn\'t own album';
 			RETURN return_rec;
 		END IF;
 
@@ -2263,7 +2263,7 @@ CREATE OR REPLACE FUNCTION zoto_album_add_image (owner int4, album int4, image i
 			image_id=image;
 		IF NOT FOUND THEN
 			return_rec.code := -1;
-			return_rec.message := 'User doesn\'t own image';
+			return_rec.message := E'User doesn\'t own image';
 			RETURN return_rec;
 		END IF;
 
@@ -2349,7 +2349,7 @@ CREATE OR REPLACE FUNCTION zoto_album_del_image (owner int4, album int4, image i
 		PERFORM title from user_albums WHERE owner_userid=owner AND album_id=album;
 		IF NOT FOUND THEN
 			return_rec.code := -1;
-			return_rec.message := 'User doesn\'t own album';
+			return_rec.message := E'User doesn\'t own album';
 			RETURN return_rec;
 		END IF;
 
@@ -2357,7 +2357,7 @@ CREATE OR REPLACE FUNCTION zoto_album_del_image (owner int4, album int4, image i
 		PERFORM media_id FROM user_images WHERE owner_userid=owner AND image_id=image;
 		IF NOT FOUND THEN
 			return_rec.code := -1;
-			return_rec.message := 'User doesn\'t own image';
+			return_rec.message := E'User doesn\'t own image';
 			RETURN return_rec;
 		END IF;
 
@@ -2413,7 +2413,7 @@ CREATE OR REPLACE FUNCTION zoto_album_set_attr (owner int4, album int4, key varc
 		PERFORM title from user_albums WHERE owner_userid=owner AND album_id=album;
 		IF NOT FOUND THEN
 			return_rec.code := -1;
-			return_rec.message := 'User doesn\'t own album';
+			return_rec.message := E'User doesn\'t own album';
 			RETURN return_rec;
 		END IF;
 
@@ -2454,7 +2454,7 @@ CREATE OR REPLACE FUNCTION zoto_add_featured_album (owner int4, album int4)
 
 		IF NOT FOUND THEN
 			return_rec.code := -1;
-			return_rec.message := 'User ' || owner || ' doesn\'t own album ' || album;
+			return_rec.message := 'User ' || owner || E' doesn\'t own album ' || album;
 			return return_rec;
 		END IF;
 
@@ -2802,7 +2802,7 @@ CREATE OR REPLACE FUNCTION zoto_set_add_album (owner int4, id int4, album int4)
 		PERFORM title from user_album_sets WHERE owner_userid=owner AND set_id=id;
 		IF NOT FOUND THEN
 			return_rec.code := -1;
-			return_rec.message := 'User doesn\'t own set';
+			return_rec.message := E'User doesn\'t own set';
 			RETURN return_rec;
 		END IF;
 
@@ -2810,7 +2810,7 @@ CREATE OR REPLACE FUNCTION zoto_set_add_album (owner int4, id int4, album int4)
 		PERFORM title FROM user_albums WHERE owner_userid=owner AND album_id=album;
 		IF NOT FOUND THEN
 			return_rec.code := -1;
-			return_rec.message := 'User doesn\'t own album';
+			return_rec.message := E'User doesn\'t own album';
 			RETURN return_rec;
 		END IF;
 
