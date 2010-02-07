@@ -1320,7 +1320,7 @@ CREATE OR REPLACE FUNCTION zoto_get_latest_id(id int4)
 			1;
 
 		IF FOUND THEN
-			if char_length(user_rec.last_modified) > 0 THEN
+			if extract(epoch from user_rec.last_modified) > 0 THEN
 				RETURN user_rec.media_id || '-' || substring(md5(user_rec.last_modified) FROM 1 FOR 5);
 			ELSE
 				RETURN user_rec.media_id;
