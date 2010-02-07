@@ -1,0 +1,110 @@
+About
+
+Zoto Server is a web based photo management and sharing application server capable of storing millions of photos and supporting 10s of thousands of users.
+
+Zoto Server runs the photo sharing site Zoto.
+Licensing
+
+The server and the rest of the Zoto code base is now licensed under the New BSD License.
+
+You can read up on the BSD license here.
+
+The BSD License allows proprietary commercial use, and for the software released under the license to be incorporated into proprietary commercial products. Works based on the material may even be released under a proprietary license (but still must maintain the license requirements).
+
+If you require installation assistance, custom features, or commercial support, you can contact Kord Campbell at kordless@gmail.com regarding pricing on those items. If you don't, then download it and have fun!
+Download
+
+You can check out the software by using the SVN repository on Google Code. Make sure you have a current version of SVN installed and then do a 'svn checkout https://zoto-server.googlecode.com/svn/trunk/ zoto-server' on your server. Remember, if you are going to contribute code to the project, you'll need to a) be a member of the project and b) use your username to check out the code.
+Install
+
+There are a few dependencies that will need to be installed for Zoto before it will start. Eventually we'll have an install script, and an EC2 image. The distro we run for development and testing is Debian on an EC2 instance.
+
+# this install assumes you are running on a Debian instance on EC2, and the howto is based off ami-fb46a792
+
+# check it out
+apt-get install subversion
+svn checkout http://zoto-server.googlecode.com/svn/trunk/ zoto-server-read-only
+
+# build or download zsp_packets.so
+
+# moving zoto to the correct location (won't start for now unless it's in zoto)
+mv zoto-server-read-only /zoto
+
+# grabbing mochikit
+wget http://zoto-server.googlecode.com/files/MochiKit_Zoto.tar.gz
+tar xvfz MochiKit_Zoto.tar.gz
+mv Mochikit /zoto/aztk/web/js/third_party/
+
+# network stuff specific to EC2 - change the second ip to your internal ip on EC2, and yip to your hostname
+cat "127.0.0.1 localhost" >> /etc/hosts
+cat "10.0.1.1 yip" >> /etc/hosts
+
+# install all the standard debian packages needed
+apt-get update
+apt-get install build-essential
+apt-get install postgresql (you need to install 8.3)
+apt-get install postgresql-contrib
+apt-get install postgresql-plpython-8.3
+apt-get install python-twisted
+apt-get install python-psycopg2
+apt-get install psmisc
+apt-get install memcached
+apt-get install python-setuptools
+apt-get install python-pyopenssl (already in AMI)
+apt-get install python-soappy
+apt-get install python-nevow
+apt-get install python-simplejson
+
+# python-memcached - cache server connector for python
+wget ftp://ftp.tummy.com/pub/python-memcached/python-memcached-latest.tar.gz
+tar xvfz python-memcached*.tar.gz
+cd python-memcached*
+python setup.py install
+
+# jsmin - javascript minimizer
+cd /usr/lib/python2.4/site-packages/
+wget http://www.crockford.com/javascript/jsmin.py
+cd /usr/lib/python2.5/site-packages/
+wget http://www.crockford.com/javascript/jsmin.py
+
+# add the user for aztk, add it as a role for pg, create database, listen on *, restart
+adduser aztk
+su postgres
+createuser aztk
+exit # back to root user
+su aztk
+createdb aztk_core
+createlang plpgsql aztk_core
+createlang plpythonu aztk_core
+exit # back to root users
+echo "listen_addresses = '*'" >> /etc/postgresql/8.3/main/postgresql.conf
+/etc/init.d/postgresql-8.4 restart
+
+# create the database schema
+su aztk
+psql -U aztk aztk_core < /usr/share/postgresql/8.3/contrib/tsearch2.sql 
+psql -U aztk aztk_core < /usr/share/postgresql/8.3/contrib/btree_gist.sql
+psql -U aztk aztk_core < /usr/share/postgresql/8.3/contrib/_int.sql
+psql -U aztk aztk_core < schema.sql 
+psql -U aztk aztk_core < types.sql
+psql -U aztk aztk_core < functions.sql
+psql -U aztk aztk_core < triggers.sql
+psql -U aztk aztk_core < aggregates.sql
+psql -U aztk aztk_core < constraints.sql
+psql -U aztk aztk_core < indicies.sql
+psql -U aztk aztk_core < matviews.sql
+psql -U aztk aztk_core < views.sql
+psql -U aztk aztk_core < initial_data.sql 
+
+# edit the configuration files
+
+# configure DNS entries
+
+Still working on getting all this together folks. Hang on! 
+
+You need to specify media storage servers. To do that just run python /zoto/aztk/bin/aztk_node_stats.py
+
+For 8.4 compatibility you need to make:
+sudo su postgres -c psql
+CREATE TEXT SEARCH CONFIGURATION public.default ( COPY = pg_catalog.english );
+
