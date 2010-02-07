@@ -19,7 +19,8 @@ from psycopg2.extras import DictCursor
 
 DB_NAME = aztk_config.services.get('api.database', 'main_db')
 DB_USER = aztk_config.services.get('api.database', 'username')
-DB_DSN = "host=localhost dbname=%s user=%s" % (DB_NAME, DB_USER)
+DB_HOST = aztk_config.services.get('api.database', 'hostname')
+DB_DSN = "host='%s' dbname='%s' user='%s'" % (DB_HOST, DB_NAME, DB_USER)
 
 class audit_base(object):
 	def __init__(self):

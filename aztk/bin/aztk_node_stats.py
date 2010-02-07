@@ -43,12 +43,13 @@ def get_version(command, regex):
 		version = match.group(1)
 	else:
 		version = "?"
+	version = version[:32]
 	std_in.close()
 	std_out.close()
 	return version 
 
 def do_that_thing():
-	database_partition = "/huge"
+	database_partition = "/zoto/media"
 
 	# version commands for our daemons
 	apache_cmd = "/usr/sbin/apache2 -v"
@@ -68,7 +69,10 @@ def do_that_thing():
 	# drive space calcs
 	st = os.statvfs(database_partition)
 	my_hostname = socket.gethostname()
-	my_ip = aztk_config.setup.get('interfaces', my_hostname)
+	try:
+		my_ip = aztk_config.setup.get('interfaces', my_hostname)
+	except:
+		my_ip = socket.gethostbyaddr(socket.gethostname())
 
 	info = {
 		"apache_version": get_version(apache_cmd, RE_apache_ver),
@@ -88,8 +92,8 @@ def do_that_thing():
 		"percent_storage_free": st.f_bfree / float(st.f_blocks) * 100,
 		}
 	# connect to db..
-	DSN = "host=localhost dbname=aztk_core"
-	db = psycopg2.connect("host=localhost dbname=%s user=%s" % (
+	db = psycopg2.connect("host='%s' dbname='%s' user='%s'" % (
+		aztk_config.services.get('api.database', 'hostname'),
 		aztk_config.services.get('api.database', 'main_db'),
 		aztk_config.services.get('api.database', 'username')))
 	cur = db.cursor()
