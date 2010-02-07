@@ -590,8 +590,8 @@ class Tags(AZTKAPI, xmlrpc.XMLRPC):
 		if glob.has_key("simple_search_query") and glob['simple_search_query']:
 			query_args['ssq'] = self.app.api.globber._format_query(glob['simple_search_query'])
 			sub_ors = [
-				"t1.fulltext_index @@ to_tsquery('default', %(ssq)s)",
-				"t1.ft_tag_index @@ to_tsquery('default', %(ssq)s)"
+				"t1.fulltext_index @@ to_tsquery('english', %(ssq)s)",
+				"t1.ft_tag_index @@ to_tsquery('english', %(ssq)s)"
 			]
 			where.append("(%s)" % " OR ".join(sub_ors))
 
@@ -815,8 +815,8 @@ class Tags(AZTKAPI, xmlrpc.XMLRPC):
 		if glob.has_key('simple_search_query') and glob['simple_search_query']:
 			query_args['ssq'] = self.app.api.globber._format_query(glob['simple_search_query'])
 			sub_ors = [
-				"t2.fulltext_index @@ to_tsquery('default',%(ssq)s)",
-				"t2.ft_tag_index @@ to_tsquery('default',%(ssq)s')"
+				"t2.fulltext_index @@ to_tsquery('english',%(ssq)s)",
+				"t2.ft_tag_index @@ to_tsquery('english',%(ssq)s')"
 			]
 			extra_where.append("(%s)" % ' or '.join(sub_ors))
 
@@ -825,7 +825,7 @@ class Tags(AZTKAPI, xmlrpc.XMLRPC):
 			count = 1
 			for tag in glob['tag_union']:
 				query_args["tag_union%s" % count] = self.app.api.globber._format_query(tag)
-				ors.append("t2.ft_tag_index @@ to_tsquery('default', %%(tag_union%s)s)" % count)
+				ors.append("t2.ft_tag_index @@ to_tsquery('english', %%(tag_union%s)s)" % count)
 				count += 1
 			if len(ors) > 0:
 				extra_where.append('('+' or '.join(ors)+')')
@@ -933,8 +933,8 @@ class Tags(AZTKAPI, xmlrpc.XMLRPC):
 		if glob.has_key('simple_search_query') and glob['simple_search_query']:
 			query_args['ssq'] = self.app.api.globber._format_query(glob['simple_search_query'])
 			sub_ors = [
-				"t2.fulltext_index @@ to_tsquery('default', %(ssq)s)",
-				"t2.ft_tag_index @@ to_tsquery('default',%(ssq)s)"
+				"t2.fulltext_index @@ to_tsquery('english', %(ssq)s)",
+				"t2.ft_tag_index @@ to_tsquery('english',%(ssq)s)"
 			]
 			extra_where.append("(%s)" % ' or '.join(sub_ors))
 
@@ -943,7 +943,7 @@ class Tags(AZTKAPI, xmlrpc.XMLRPC):
 			count = 1
 			for tag in glob['tag_union']:
 				query_args['tag_union%s' % count] = self.app.api.globber._format_query(tag)
-				ors.append("t2.ft_tag_index @@ to_tsquery('default',%%(tag_union%s)s)" % count)
+				ors.append("t2.ft_tag_index @@ to_tsquery('english',%%(tag_union%s)s)" % count)
 			if len(ors) > 0:
 				extra_where.append('('+' or '.join(ors)+')')
 				
@@ -1047,8 +1047,8 @@ class Tags(AZTKAPI, xmlrpc.XMLRPC):
 		if glob.has_key('simple_search_query') and glob['simple_search_query']:
 			query_args['ssq'] = self.app.api.globber._format_query(glob['simple_search_query'])
 			sub_ors = [
-				"t3.fulltext_index @@ to_tsquery('default', %(ssq)s)",
-				"t3.ft_tag_index @@ to_tsquery('default', %(ssq)s)"
+				"t3.fulltext_index @@ to_tsquery('english', %(ssq)s)",
+				"t3.ft_tag_index @@ to_tsquery('english', %(ssq)s)"
 			]
 			inner_where.append("(%s)" % ' or '.join(sub_ors))
 
@@ -1057,7 +1057,7 @@ class Tags(AZTKAPI, xmlrpc.XMLRPC):
 			count = 1
 			for tag in glob['tag_union']:
 				query_args['tag_union%s' % count] = self.app.api.globber._format_query(tag)
-				ors.append("t3.ft_tag_index @@ to_tsquery('default', %%(tag_union%s)s)" % count)
+				ors.append("t3.ft_tag_index @@ to_tsquery('english', %%(tag_union%s)s)" % count)
 				count += 1
 
 			if len(ors) > 0:

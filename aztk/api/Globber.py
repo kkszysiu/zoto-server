@@ -199,8 +199,8 @@ class Globber(AZTKAPI, xmlrpc.XMLRPC):
 			if glob['simple_search_query']:
 				query_args['ssq'] = self._format_query(glob['simple_search_query'])
 				sub_ors = [
-					"t1.fulltext_index @@ to_tsquery('default',%(ssq)s)",
-					"t1.ft_tag_index @@ to_tsquery('default',%(ssq)s)"
+					"t1.fulltext_index @@ to_tsquery('english',%(ssq)s)",
+					"t1.ft_tag_index @@ to_tsquery('english',%(ssq)s)"
 				]
 				where.append("(%s)" % ' or '.join(sub_ors))
 
