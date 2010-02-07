@@ -12,7 +12,7 @@ B{NOTE}
 	@stack comes first!
 """
 ## STD LIBS
-from md5 import md5
+from hashlib
 from xmlrpclib import Fault, Binary
 from pprint import pformat, pprint
 import time
@@ -286,7 +286,7 @@ class memoize(object):
 		if not args[0].caches.has_key(self.func_name):
 			args[0].caches[self.func_name] = self
 		## print "I'm being called with %d args" % len(args[1:])
-		arg_key = md5(str(args[1:])).hexdigest()
+		arg_key = hashlib.md5(str(args[1:])).hexdigest()
 		## print "I'm being called with [%s]" % arg_key
 		self._cull()
 		if self.cache.has_key(arg_key):
