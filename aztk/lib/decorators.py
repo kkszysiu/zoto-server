@@ -12,9 +12,9 @@ B{NOTE}
 	@stack comes first!
 """
 ## STD LIBS
-from hashlib
 from xmlrpclib import Fault, Binary
 from pprint import pformat, pprint
+import hashlib
 import time
 import sys
 import inspect
