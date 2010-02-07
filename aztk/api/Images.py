@@ -551,7 +551,7 @@ class Images(AZTKAPI, xmlrpc.XMLRPC):
 						UPDATE
 							user_images
 						SET
-							fulltext_index = to_tsvector('default', title || ' ' || description)
+							fulltext_index = to_tsvector('english', title || ' ' || description)
 						WHERE
 							image_id = %(image_id)s
 						""", info)

@@ -663,7 +663,7 @@ CREATE OR REPLACE FUNCTION zoto_reindex_tags(image int4)
 		UPDATE
 			user_images
 		SET
-			ft_tag_index = to_tsvector('default', tag_list)
+			ft_tag_index = to_tsvector('english', tag_list)
 		WHERE
 			image_id = image;
 	END;
@@ -712,7 +712,7 @@ CREATE OR REPLACE FUNCTION zoto_image_set_attr(owner int4, id int4, attribute va
 			UPDATE
 				user_images
 			SET
-				fulltext_index = to_tsvector('default', title || ' ' || description)
+				fulltext_index = to_tsvector('english', title || ' ' || description)
 			WHERE
 				image_id = id AND
 				owner_userid = owner;
@@ -1321,7 +1321,7 @@ CREATE OR REPLACE FUNCTION zoto_get_latest_id(id int4)
 
 		IF FOUND THEN
 			if extract(epoch from user_rec.last_modified) > 0 THEN
-				RETURN user_rec.media_id || '-' || substring(md5(user_rec.last_modified) FROM 1 FOR 5);
+				RETURN user_rec.media_id || '-' || substring(md5(CAST(extract(epoch from user_rec.last_modified) AS text)) FROM 1 FOR 5);
 			ELSE
 				RETURN user_rec.media_id;
 			END IF;
