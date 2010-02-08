@@ -28,7 +28,7 @@ lang_file_path = "%s/servers/site_root/i18n/%%s/LC_MESSAGES/zoto.js" % aztk_conf
 class lang_file(rend.Page):
 	def renderHTTP(self, ctx):
 		request = inevow.IRequest(ctx)
-		request.setHeader('content-type', 'text/javascript')
+		request.setHeader('content-type', 'text/javascript; charset=UTF-8')
 		lang = ctx.arg('lang')
 		data = ""
 		if lang is not None:
@@ -92,14 +92,14 @@ class js_file(static.File):
                 ##
                 ## Check to see if the file has been modified since the client's mtime
                 ##
-                request.setHeader('content-type', "text/javascript")
+                request.setHeader('content-type', "text/javascript; charset=UTF-8")
                 if self.mtime > client_time:
                         ## New version available.
                         request.setLastModified(self.mtime)
 			stamp = datetime.now() + timedelta(365)
 			request.setHeader('expires', datetimeToString(mktime(stamp.timetuple()))) 
                         request.setHeader('content-length', str(len(self.data)))
-                        request.setHeader('content-type', "text/javascript")
+                        request.setHeader('content-type', "text/javascript; charset=UTF-8")
                         return self.data
                 else:
                         request.setResponseCode(http.NOT_MODIFIED)
@@ -135,7 +135,7 @@ class zoto_js(rend.Page):
 
 	def renderHTTP(self, ctx):
                 request = inevow.IRequest(ctx)
-		request.setHeader('content-type', "text/javascript")
+		request.setHeader('content-type', "text/javascript; charset=UTF-8")
 		if request.getHeader("If-Modified-Since"):
 			request.setResponseCode(http.NOT_MODIFIED)
 			return "OK"
@@ -201,7 +201,7 @@ class managers_js(zoto_js):
 
 	def renderHTTP(self, ctx):
                 request = inevow.IRequest(ctx)
-		request.setHeader('content-type', "text/javascript")
+		request.setHeader('content-type', "text/javascript; charset=UTF-8")
 		if request.getHeader("If-Modified-Since"):
 			request.setResponseCode(http.NOT_MODIFIED)
 			return "OK"

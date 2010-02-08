@@ -371,7 +371,7 @@ function zapi_call(method, args) {
 	var obj = getXMLHttpRequest();
 
 	obj.open("POST", "/RPC2", true);
-	obj.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	obj.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF8');
 	obj.setRequestHeader('Preferred-Format', 'JSON');
 
 	var msg = new XMLRPCMessage(method);
@@ -391,6 +391,7 @@ function zapi_call(method, args) {
 		msg.addParameter(unicode_encode_for_greater_justice(args[k]));
 	}
 //logDebug(msg.xml())
+	console.debug(msg.xml())
 	return call_table.get_call(method, serializeJSON(args), obj, msg.xml());
 
 	/*

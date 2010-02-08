@@ -38,7 +38,7 @@ XMLRPCMessage.prototype.xml = function(){
   // assemble the XML message header
   var xml = "";
   
-  xml += "<?xml version=\"1.0\"?>\n";
+  xml += "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
   xml += "<methodCall>\n";
   xml += "<methodName>" + method+ "</methodName>\n";
   xml += "<params>\n";

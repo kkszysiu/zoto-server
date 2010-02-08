@@ -49,7 +49,8 @@ class zapi_handler(xmlrpc.XMLRPC):
 		except Fault, f:
 			self._cbRender(f, request)
 		else:
-			request.setHeader("content-type", "text/xml")
+			#request.setHeader("content-type", "text/xml")
+			request.setHeader("content-type", "text/xml; charset=UTF-8")
 
 			if len(args) < 2:
 				f = None
