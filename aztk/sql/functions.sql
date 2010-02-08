@@ -2935,12 +2935,16 @@ RETURNS  zoto_return_type AS
 					from_userid,
 					to_userid,
 					subject,
-					body
+					body,
+					sent_status,
+					received_status
 				) VALUES (
 					from_user,
 					to_user,
 					subject_text,
-					body_text
+					body_text,
+					1,
+					0
 				);
 				IF reply_to != -1 THEN
 					UPDATE
