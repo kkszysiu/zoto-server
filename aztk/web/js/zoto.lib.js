@@ -391,7 +391,6 @@ function zapi_call(method, args) {
 		msg.addParameter(unicode_encode_for_greater_justice(args[k]));
 	}
 //logDebug(msg.xml())
-	console.debug(msg.xml())
 	return call_table.get_call(method, serializeJSON(args), obj, msg.xml());
 
 	/*
