@@ -147,7 +147,7 @@ function stop_debugging(){
 
 
 /* debug to file cause flash has no clue */
-$log_path = '/zoto/www/debug.txt';
+$log_path = '/zoto/apache_web/static_pages/debug.txt';
 $log_ref = null;
 $upload_success = false;
 
@@ -176,15 +176,15 @@ $auth_token = $auth[2];
 
 /* set up our ZAPI call parameters */
 //$zapi_hostname = $_SERVER['SERVER_ADDR'];
-$zapi_hostname = "zoto.pl";
-//$zapi_hostname = "www.".$domain;
+//$zapi_hostname = "www.zoto.com";
+$zapi_hostname = "www.".$domain;
 $zapi_port = 80;
 $zapi_location = "/RPC2";
 $zapi_key = "5d4a65c46a072a4542a816f2f28bd01a";
 $zapi_auth = array("username"=>$auth_username, "token"=>$auth_token);
 $zapi_function = "images.add";
 
-$uploaddir = '/zoto/www/uploads/';
+$uploaddir = '/zoto/apache_web/static_pages/uploads/';
 $uploadfile = $uploaddir . basename($_FILES['Filedata']['name']);
 logDebug($uploadfile);
 
