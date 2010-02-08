@@ -284,6 +284,14 @@ function zoto_tag_lookahead(options) {
 //	this.zoto_look_ahead(options);
 }
 
+function check_tag( string ) {
+  regex = /^[0-9a-zA-Z_]+$/;
+ if( !string.match( regex ) ) {
+  return false;
+ }
+ return true;
+}
+
 extend(zoto_tag_lookahead, zoto_look_ahead, {
 	assign_username: function(username) {
 		this.username = username;
@@ -307,6 +315,10 @@ extend(zoto_tag_lookahead, zoto_look_ahead, {
 		var stripped_tags = [];
 		for (var i=0; i < tags.length; i++) {
 			stripped_tags.push(tags[i].strip());
+			if(!check_tag(tags[i].strip())) {
+				alert('Illegal characters in tags.');
+				return false;
+			}
 		}
 		this.clear();
 		d = zapi_call('tags.multi_tag_image', [this.username, this.media_ids, stripped_tags]);
