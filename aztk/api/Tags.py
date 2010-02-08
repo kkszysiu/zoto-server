@@ -225,6 +225,11 @@ class Tags(AZTKAPI, xmlrpc.XMLRPC):
 			return utils.return_deferred_error(ex.value)
 
 		self.log.debug("about to tag %d images with %d tags" % (len(image_ids), len(tag_names)))
+		for i in range(len(tag_names)):
+			try:
+				str(tag_names[i])
+			except:
+				return False
 		for id in image_ids:
 			try:
 				id = validation.cast_integer(id, 'image_id')
